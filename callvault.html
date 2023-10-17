@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <html>
 <body>
+  <select id="user_id">
+    <option value="2235735">IU</option>
+    <option value="1958985">DP</option>
+      
+  </select>
+  <input type="text" id="api_key" placeholder="API KEY">
+  <button onclick="var a=document.getElementById('api_key').value; var b=document.getElementById('user_id').value;dofunc(b,a);">Submit</button>
   <div class="points___UO9AU">
-    
   </div>
   <script>
     'use strict';
+    function dofunc(val1, val2){
 
     async function fetchLogs() {
-        const url = "https://api.torn.com/user/1958985?selections=log&cat=138&key=bec9KYHPB8EzJjR0";
+        const url = "https://api.torn.com/user/" + val1 +"?selections=log&cat=138&key=" + val2;
         const response = await fetch(url);
         const fetchResult = await response.json();
         return fetchResult;
     };
+
+    
 
     function calculateFinalAmount(fetchResult, propertyId) {
         const sortedLogs = Object.values(fetchResult.log)
@@ -79,6 +88,7 @@
     };
 
     main();
+}
   </script>
 </body>
 </html>
