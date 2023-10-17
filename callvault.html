@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<body>
+  test
+  <script>
+    'use strict';
+
+    async function fetchLogs() {
+        const url = "https://api.torn.com/user/2235735?selections=log&cat=138&key=APIKEY";
+        const response = await fetch(url);
+        const fetchResult = await response.json();
+        return fetchResult;
+    };
+
+    function calculateFinalAmount(fetchResult, propertyId) {
+        const sortedLogs = Object.values(fetchResult.log)
+        .filter(entry => entry.data && entry.data.property_id === propertyId)
+        .sort((a, b) => a.timestamp - b.timestamp);
+
+        let finalAmount = 0;
+
+        sortedLogs.forEach(entry => {
+            const depositedValue = entry.data.deposited || 0;
+            const withdrawnValue = entry.data.withdrawn || 0;
+            finalAmount += depositedValue - withdrawnValue;
+        });
+
+        return finalAmount;
+    };
+
+    async function main() {
+        try {
+            const fetchResult = await fetchLogs();
+            const propertyId = 2600552;
+
+            const finalAmount = calculateFinalAmount(fetchResult, propertyId);
+            //console.log(`Final amount: ${finalAmount}`);
+
+             // Create a new paragraph element
+            var newParagraph = document.createElement('p');
+            newParagraph.classList.add('point-block___rQyUK');
+            newParagraph.setAttribute('tabindex', '0');
+
+            // Create the span elements with classes and text content
+            var nameSpan = document.createElement('span');
+            nameSpan.classList.add('name___ChDL3');
+            nameSpan.textContent = 'Vault:';
+
+            var valueSpan = document.createElement('span');
+            valueSpan.classList.add('value___mHNGb', 'money-positive___dMv7U');
+            valueSpan.textContent = '$'+finalAmount.toLocaleString();
+            valueSpan.setAttribute('id', 'user-vault');
+            valueSpan.setAttribute('data-money', finalAmount);
+
+            // Append the span elements to the paragraph
+            newParagraph.appendChild(nameSpan);
+            newParagraph.appendChild(valueSpan);
+
+            // Append the new paragraph to the div
+            var divElement = document.querySelector('.points___UO9AU');
+            divElement.appendChild(newParagraph);
+
+
+            // Find the existing value span
+            var aaa = document.getElementById('user-vault');
+
+            // Get the value of the data-money attribute
+            var dataMoneyValue = aaa.getAttribute('data-money');
+
+            // Display the value in the console
+            //console.log('Data Money Value:', dataMoneyValue);
+
+            // You can use `finalAmount` in other function scopes as needed
+        } catch (error) {
+            console.error('Error fetching logs:', error);
+        }
+    };
+
+    main();
+  </script>
+</body>
+</html>
