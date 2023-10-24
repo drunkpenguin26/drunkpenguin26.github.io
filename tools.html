@@ -1,1 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Random Tools</title>
+</head>
+<style type="text/css">
+	#discountCalcDiv
+	{
+	font-size: 20px;
+	color: black;
+	background-color: green;
+	width: 50%;
+	text-align: center;
+	}
+</style>
+<body>
+  <div id="discountCalcDiv">
+  	<br>
+    <h1>Discount Calculator</h1>
+    <p>Enter the value and discount percentage</p>
 
+   
+    <label for="discountPercentage">What is </label>
+    <input type="number" id="discountPercentage" placeholder="Enter the discount percentage" style="width: 50px;"> %
+     <label for="originalPrice"> of</label>
+    <input type="number" id="originalPrice" placeholder="Enter the original price" style="width: 150px;">
+
+    <button onclick="calculateDiscount()">Calculate</button>
+
+    <p>Discounted Amount: <span id="discountedAmount"></span></p>
+    <p>Discounted Price: <span id="discountedPrice"></span></p>
+    <br>
+    <br>
+
+    <script>
+        function calculateDiscount() {
+            const originalPrice = parseFloat(document.getElementById("originalPrice").value);
+            const discountPercentage = parseFloat(document.getElementById("discountPercentage").value);
+
+            if (!isNaN(originalPrice) && !isNaN(discountPercentage)) {
+                const discountAmount = (originalPrice * discountPercentage) / 100;
+                const discountedPrice = originalPrice - discountAmount;
+                document.getElementById("discountedPrice").textContent = discountedPrice.toFixed(2);
+                document.getElementById("discountedAmount").textContent = discountAmount.toFixed(2);
+            } else {
+                alert("Please enter valid numbers for both original price and discount percentage.");
+            }
+        }
+    </script>
+    </div>
+</body>
+</html>
